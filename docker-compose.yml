@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: pdf_user
+      POSTGRES_PASSWORD: pdf_password
+      POSTGRES_DB: pdf_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Volume pour stocker les données de la base PostgreSQL
+    ports:
+      - "5432:5432"
+
+  pdf-diff:
+    build: .
+    depends_on:
+      - postgres
+    volumes:
+      - ./pdf-copies:/app/data  # Monte le dossier local pdf-copies dans /app/data dans le conteneur
+      - ./pdf-backups:/app/pdf-backups  # Volume pour les sauvegardes des PDFs
+    environment:
+      DATABASE_URL: postgres://pdf_user:pdf_password@postgres:5432/pdf_db
+    command: >
+      bash -c "while !</dev/tcp/postgres/5432; do sleep 1; done; python main.py"  # Attente que PostgreSQL soit prêt avant de lancer le programme
+
+volumes:
+  pgdata:  
+  pdf-copies:  
+  pdf-backups:  # Volume pour les fichiers de sauvegarde
