@@ -9,7 +9,8 @@ VOLUME_DIR=$(CURRENT_DIR)/pdf-copies
 BACKUP_DIR=$(CURRENT_DIR)/pdf-backups
 
 # Commande pour démarrer l'ensemble des conteneurs
-up: build run 
+up: build run
+
 # Commande pour construire l'image Docker
 build:
 	@echo "==> Construction de l'image Docker..."
@@ -45,7 +46,6 @@ accessdb:
 
 # Commande pour supprimer l'image Docker
 clean:
-	@echo "==> Suppression de l'image Docker"
 	docker-compose down
 	
 # Commande pour supprimer le volume
@@ -65,6 +65,9 @@ ls:
 	docker ps -a
 	docker images -a
 	docker volume ls
+
+destroy :
+	docker-compose down -v --rmi all
 
 adios:
 	@if [ -n "$$(docker ps -aq)" ]; then docker rm -f $$(docker ps -aq); fi

@@ -34,8 +34,10 @@ make
 Les rapports générés seront stockés dans le dossier rapport_comparaison, avec un sous-dossier daté automatiquement.
 
 Pour supprimer toutes les images Docker ainsi que les volumes (attention, cela supprime également la base de données), utilisez la commande suivante :
-make adios
+make destroy
 
 Pour accéder aux logs des conteneurs Docker, utilisez la commande suivante :
 make log
+
+attention La commande make adios detruit tous les dockers, images et volumes de votre ordinateur !!!!!
 
